@@ -103,7 +103,7 @@ const rewriteInternalLinks = (
         pageTitle = findLinkedPageInTree(
           flatPages,
           path.join(path.dirname(baseUrl), linkedPageFqfn),
-        ).pageTitle;
+        )?.pageTitle;
         LOGGER.debug(
           `Rewrite link to other page with title ${pageTitle} original link was ${href}`,
         );
