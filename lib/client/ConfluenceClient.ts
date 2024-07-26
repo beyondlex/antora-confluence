@@ -10,6 +10,7 @@ interface ConfluenceClientOptions {
   spaceKey: string;
   editorVersion: string;
   ancestorId?: string;
+  ignoreBrokenLinks?: boolean;
 }
 
 const LOGGER = getLogger();
@@ -27,6 +28,7 @@ export abstract class ConfluenceClient {
   readonly BASE_URL;
   readonly AUTHORIZATION_HEADER;
   readonly ANCESTOR_ID;
+  readonly IGNORE_BROKEN_LINKS;
 
   constructor(config: ConfluenceClientOptions) {
     this.BASE_URL = new URL(config.baseUrl.origin);
@@ -42,6 +44,7 @@ export abstract class ConfluenceClient {
     this.API_V2_PATH = apiContext + this.API_V2_IDENTIFIER;
     this.AUTHORIZATION_HEADER = this.buildAuthHeader();
     this.ANCESTOR_ID = config.ancestorId;
+    this.IGNORE_BROKEN_LINKS = config.ignoreBrokenLinks ?? false;
   }
 
   async init() {

@@ -247,6 +247,7 @@ const publish = async (
           outPutDir,
           showBanner,
           flatPages,
+          confluenceClient.IGNORE_BROKEN_LINKS,
         );
         if (confluencePage) {
           const localHash = confluencePage.hash;
@@ -394,6 +395,7 @@ const processPage = (
   outPutDir: string,
   showBanner: boolean,
   flatPages: any,
+  ignoreBrokenLinks: boolean,
 ) => {
   LOGGER.info(`Processing ${page.fileName}`);
   const baseUrl = path.join(process.cwd(), outPutDir, Path.dirname(page.fqfn));
@@ -411,7 +413,7 @@ const processPage = (
     rewriteAdmonitionBlocks(content);
     rewriteCodeBlocks(content);
     rewriteMarks(content);
-    rewriteInternalLinks(content, page.fqfn, flatPages);
+    rewriteInternalLinks(content, page.fqfn, flatPages, ignoreBrokenLinks);
     rewriteDescriptionLists(content);
     rewriteCDATASections(content);
 

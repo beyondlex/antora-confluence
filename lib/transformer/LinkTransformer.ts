@@ -77,6 +77,7 @@ const rewriteInternalLinks = (
   content: HTMLElement,
   baseUrl: string,
   flatPages: any,
+  ignoreBrokenLinks: boolean,
 ) => {
   content.querySelectorAll("a[href]").forEach((a) => {
     const href = a.getAttribute("href");
@@ -100,13 +101,18 @@ const rewriteInternalLinks = (
           linkedPageFqfn = hrefWithAnchor[0];
           anchor = hrefWithAnchor[1];
         }
-        pageTitle = findLinkedPageInTree(
+        const linkedPage = findLinkedPageInTree(
           flatPages,
           path.join(path.dirname(baseUrl), linkedPageFqfn),
-        )?.pageTitle;
-        LOGGER.debug(
-          `Rewrite link to other page with title ${pageTitle} original link was ${href}`,
-        );
+        )
+        if (linkedPage) {
+          pageTitle = linkedPage.pageTitle;
+          LOGGER.debug(`Rewrite link to other page with title ${pageTitle}, original link was ${href}`);
+        } else {
+          if (!ignoreBrokenLinks) {
+            throw new Error(`The page '${baseUrl}' contains broken links, you can ignore this by setting 'ignore-broken-links' to true.`);
+          }
+        }
       }
       if (pageTitle && a.text) {
         const linkMacro =

@@ -40,6 +40,7 @@ const publishToConfluence = async (
     baseUrl: new URL(destConfig.confluenceApi),
     spaceKey: destConfig.confluenceSpace,
     ancestorId: destConfig.ancestorId,
+    ignoreBrokenLinks: destConfig.ignoreBrokenLinks,
   });
   await confluenceClient.init();
   const pageStructure = new Map();
